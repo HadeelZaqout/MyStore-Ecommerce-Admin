@@ -1,0 +1,33 @@
+@page
+@model MyStore.Pages.Categories.CreateModel
+@{
+    ViewData["Title"] = "Categories - Create";
+}
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-8">
+        <h2 class="mb-6"><i class="bi bi-file-earmark-plus-fill me-2 text-success"></i> Create Category</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label asp-for="category.Name" class="form-label fw-semibold"></label>
+                <input class="form-control" asp-for="category.Name" />
+                <span class="text-danger" asp-validation-for="category.Name"></span>
+            </div>
+
+            <div class="mb-6">
+                <label class="form-label fw-semibold">Main Image</label>
+                <input asp-for="category.Image" class="form-control" required accept="@MyStore.Services.UploadImageService.accept" />
+                <span asp-validation-for="category.Image" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-3">
+                <button class="btn btn-success px-5"><i class="bi bi-floppy2-fill me-2"></i>Save</button>
+                <a asp-page="Index" class="btn btn-secondary px-5"><i class="bi bi-house-door-fill me-2"></i>Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_validationscriptspartial" />
+}

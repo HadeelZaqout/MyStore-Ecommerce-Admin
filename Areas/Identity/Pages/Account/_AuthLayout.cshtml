@@ -1,0 +1,64 @@
+@{
+    Layout = null;
+    var pageTitle = ViewData["Title"]?.ToString() ?? "Account";
+    var contentWidthClass = ViewData["AuthContentWidth"]?.ToString() ?? "w-lg-500px";
+    var authSubtitle = ViewData["AuthSubtitle"]?.ToString() ?? "Securely manage your account and keep your information up to date with MyStore identity tools.";
+    var hideAuthAside = ViewData["HideAuthAside"] as bool? ?? false;
+    var leftPaneClass = hideAuthAside ? "w-100 p-10" : "w-lg-50 p-10 order-2 order-lg-1";
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <base href="../../../" />
+    <title>@pageTitle - MyStore</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+    <link href="~/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="kt_body" class="app-blank">
+    <script>
+        var defaultThemeMode = "light";
+        var themeMode;
+        if (document.documentElement) {
+            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
+                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
+            } else {
+                themeMode = localStorage.getItem("data-bs-theme") || defaultThemeMode;
+            }
+            if (themeMode === "system") {
+                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            }
+            document.documentElement.setAttribute("data-bs-theme", themeMode);
+        }
+    </script>
+
+    <div class="d-flex flex-column flex-root" id="kt_app_root">
+        <div class="d-flex flex-column flex-lg-row flex-column-fluid">
+            <div class="d-flex flex-column flex-lg-row-fluid @leftPaneClass">
+                <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+                    <div class="@contentWidthClass p-10">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+
+            @if (!hideAuthAside)
+            {
+                <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2 bg-primary" style="background-image: url('~/assets/media/misc/auth-bg.png');">
+                    <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
+                        <img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" src="~/assets/media/misc/auth-screens.png" alt="Authentication screen" />
+                        <h1 class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7">Fast, Efficient and Productive</h1>
+                        <div class="d-none d-lg-block text-white fs-base text-center">@authSubtitle</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="~/assets/js/scripts.bundle.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

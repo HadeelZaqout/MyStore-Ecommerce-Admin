@@ -1,0 +1,33 @@
+﻿@page
+@model ResendEmailConfirmationModel
+@{
+    ViewData["Title"] = "Resend Email Confirmation";
+    Layout = "_AuthLayout";
+}
+
+<form method="post" class="form w-100">
+    <div class="text-center mb-11">
+        <h1 class="text-dark fw-bolder mb-3">Resend confirmation email</h1>
+        <div class="text-gray-500 fw-semibold fs-6">Enter your email to receive a new confirmation link</div>
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger mb-5" role="alert"></div>
+
+    <div class="form-floating mb-6">
+        <input asp-for="Input.Email" class="form-control bg-transparent" aria-required="true" placeholder="name@example.com" />
+        <label asp-for="Input.Email" class="form-label">Email</label>
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+
+    <div class="d-grid mb-8">
+        <button type="submit" class="btn btn-primary">Resend confirmation</button>
+    </div>
+
+    <div class="text-gray-500 text-center fw-semibold fs-6">
+        Back to <a asp-page="./Login" class="link-primary">Sign in</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

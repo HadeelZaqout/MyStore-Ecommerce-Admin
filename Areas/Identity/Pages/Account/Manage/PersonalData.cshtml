@@ -1,0 +1,25 @@
+﻿@page
+@model PersonalDataModel
+@{
+    ViewData["Title"] = "Personal Data";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<h3 class="mb-1">@ViewData["Title"]</h3>
+<p class="text-gray-600 mb-6">Review how your personal data is handled in your account.</p>
+
+<div class="row">
+    <div class="col-lg-8">
+        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
+        <p>
+            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+        </p>
+        <div class="alert alert-info">
+            Download and delete data actions are not scaffolded in this project yet.
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

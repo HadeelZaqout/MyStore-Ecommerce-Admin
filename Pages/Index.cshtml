@@ -1,0 +1,19 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <div class="card border-0 shadow-sm p-8 mx-auto" style="max-width: 760px;">
+        <span class="badge badge-light-primary fs-7 fw-semibold mb-4 mx-auto">Store Dashboard</span>
+        <h1 class="display-5 fw-bold mb-4">Manage your products with confidence</h1>
+        <p class="text-muted fs-5 mb-6">
+            Keep your catalog organized, update categories faster, and keep your team aligned with a cleaner workflow.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a asp-page="/Products/Index" class="btn btn-primary px-6">View Products</a>
+            <a asp-page="/Categories/Index" class="btn btn-light-primary px-6">View Categories</a>
+        </div>
+    </div>
+</div>

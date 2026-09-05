@@ -1,0 +1,17 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm Email";
+    Layout = "_AuthLayout";
+}
+
+<div class="text-center">
+    <h1 class="text-dark fw-bolder mb-5">@ViewData["Title"]</h1>
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="alert alert-info">@Model.StatusMessage</div>
+    }
+    <div class="text-gray-600 fw-semibold fs-6 mt-5">
+        Continue to <a asp-page="./Login" class="link-primary">Sign in</a>
+    </div>
+</div>

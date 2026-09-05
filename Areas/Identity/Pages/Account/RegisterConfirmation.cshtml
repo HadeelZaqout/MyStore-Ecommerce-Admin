@@ -1,0 +1,26 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register Confirmation";
+    Layout = "_AuthLayout";
+}
+
+<div class="text-center">
+    <h1 class="text-dark fw-bolder mb-5">@ViewData["Title"]</h1>
+
+    @if (Model.DisplayConfirmAccountLink)
+    {
+        <div class="alert alert-warning mb-5">
+            Email sender is not configured. Use the link below to confirm this account.
+        </div>
+        <a id="confirm-link" class="btn btn-primary" href="@Model.EmailConfirmationUrl">Confirm account</a>
+    }
+    else
+    {
+        <div class="alert alert-success">Please check your email to confirm your account.</div>
+    }
+
+    <div class="text-gray-600 fw-semibold fs-6 mt-6">
+        Back to <a asp-page="./Login" class="link-primary">Sign in</a>
+    </div>
+</div>

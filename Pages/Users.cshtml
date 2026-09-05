@@ -1,0 +1,134 @@
+@page
+@model MyStore.Pages.UsersModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="card card-flush h-xl-100">
+    <div class="card-header pt-7">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bold text-gray-900">Users</span>
+            <span class="text-gray-500 mt-1 fw-semibold fs-6">List of all users and their emails</span>
+        </h3>
+    </div>
+    <div class="card-body pt-5">
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-success mb-6">@Model.StatusMessage</div>
+        }
+
+        <form method="get" class="d-flex flex-wrap gap-3 mb-6">
+            <div class="position-relative w-300px">
+                <i class="ki-duotone ki-magnifier fs-3 text-gray-500 position-absolute top-50 translate-middle-y ms-4">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+                <input type="text" name="SearchEmail" class="form-control form-control-solid ps-12" placeholder="Filter by email" value="@Model.SearchEmail" />
+            </div>
+            <select name="PageSize" class="form-select form-select-solid w-125px" asp-for="PageSize">
+                <option value="10">10 / page</option>
+                <option value="20">20 / page</option>
+                <option value="50">50 / page</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Apply</button>
+        </form>
+
+        <form method="post" asp-page-handler="SendSelectedEmails">
+            <input type="hidden" asp-for="SearchEmail" />
+            <input type="hidden" asp-for="PageIndex" />
+            <input type="hidden" asp-for="PageSize" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-5"></div>
+
+            <div class="table-responsive">
+                <table class="table align-middle table-row-dashed fs-6 gy-5">
+                    <thead>
+                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                            <th class="w-40px">
+                                <input type="checkbox" id="select-all-users" class="form-check-input" />
+                            </th>
+                            <th>#</th>
+                            <th>User name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 fw-semibold">
+                        @if (Model.Users.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-8">No users found.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @for (int i = 0; i < Model.Users.Count; i++)
+                            {
+                                var rowNumber = ((Model.Users.PageIndex - 1) * Model.PageSize) + i + 1;
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="SelectedUserIds" value="@Model.Users[i].Id" class="form-check-input user-checkbox" />
+                                    </td>
+                                    <td>@rowNumber</td>
+                                    <td>@Model.Users[i].UserName</td>
+                                    <td>@Model.Users[i].Email</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="separator my-6"></div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold" asp-for="EmailSubject">Email subject</label>
+                    <input asp-for="EmailSubject" class="form-control form-control-solid" placeholder="Subject for selected users" />
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold" asp-for="EmailBody">Email body (HTML allowed)</label>
+                    <textarea asp-for="EmailBody" rows="4" class="form-control form-control-solid" placeholder="Write your message to selected users"></textarea>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-6">
+                <button type="submit" class="btn btn-primary">Send email to selected users</button>
+            </div>
+        </form>
+
+        @if (Model.Users.TotalPages > 1)
+        {
+            <div class="d-flex justify-content-end">
+                <ul class="pagination">
+                    <li class="page-item @(Model.Users.HasPreviousPage ? "" : "disabled")">
+                        <a class="page-link" asp-route-SearchEmail="@Model.SearchEmail" asp-route-PageSize="@Model.PageSize" asp-route-PageIndex="@(Model.Users.PageIndex - 1)">Previous</a>
+                    </li>
+
+                    @for (int i = 1; i <= Model.Users.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.Users.PageIndex ? "active" : "")">
+                            <a class="page-link" asp-route-SearchEmail="@Model.SearchEmail" asp-route-PageSize="@Model.PageSize" asp-route-PageIndex="@i">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.Users.HasNextPage ? "" : "disabled")">
+                        <a class="page-link" asp-route-SearchEmail="@Model.SearchEmail" asp-route-PageSize="@Model.PageSize" asp-route-PageIndex="@(Model.Users.PageIndex + 1)">Next</a>
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const selectAll = document.getElementById('select-all-users');
+        const userCheckboxes = document.querySelectorAll('.user-checkbox');
+        if (selectAll) {
+            selectAll.addEventListener('change', function () {
+                userCheckboxes.forEach(cb => cb.checked = selectAll.checked);
+            });
+        }
+    </script>
+}
